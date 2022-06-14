@@ -64,6 +64,46 @@ target source code in `/src` in the container.
 To build AFL++ yourself - *which we recommend* - continue at
 [docs/INSTALL.md](docs/INSTALL.md).
 
+### Building and installing AFL++ for Android
+
+**Prerequisites**:
+
+* root Android device
+
+* install *termux*
+
+* run `pkg update`
+
+* Install following packages (via `pkg install <pkg_name>`)
+
+  ```
+  openssh (if needed)
+  git
+  make
+  libandroid-shmem
+  ndk-sysroot
+  ```
+
+* run `apt --fix-broken install`
+
+**Build**:	
+
+```
+git clone https://github.com/paocela/AFLplusplus-AndroidPatches
+cd AFLplusplus-AndroidPatches/clang-v13
+# here script to run all, but for now
+	dpkg -i libllvm_13.0.1_aarch64.deb
+	dpkg -i libcompiler-rt_13.0.1_aarch64.deb 
+	dpkg -i lld_13.0.1_aarch64.deb
+	dpkg -i llvm_13.0.1_aarch64.deb 
+	dpkg -i clang_13.0.1_aarch64.deb
+cd ..
+export LD_PRELOAD=$(pwd)/libLLVM-13.so
+make
+```
+
+
+
 ## Quick start: Fuzzing with AFL++
 
 *NOTE: Before you start, please read about the
