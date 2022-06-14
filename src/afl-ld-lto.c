@@ -145,7 +145,11 @@ static void edit_params(int argc, char **argv) {
               case 'O':
                 break;
               case 'p':
+#ifdef __ANDROID__
+				if (strchr(argv[i - 1], '=') == NULL) gold_pos = i;
+#else
                 if (index(argv[i - 1], '=') == NULL) gold_pos = i;
+#endif
                 break;
               case 'R':
                 break;
