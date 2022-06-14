@@ -1,0 +1,8 @@
+## Note ##
+To compile AFL++ from source in Android, you need clang-v13
+Termux provides only clang-14, and doens't keep track of previous versions
+Use the files in this folder to install packages required to have clang-v13, using:
+	>> dpkg -i <deb_file.deb>
+
+To uninstall previous versions in termux use:
+	>> pkg uninstall <pkg_name>
