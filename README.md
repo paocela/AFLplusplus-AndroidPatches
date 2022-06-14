@@ -84,14 +84,13 @@ To build AFL++ yourself - *which we recommend* - continue at
   ndk-sysroot
   ```
 
-* run `apt --fix-broken install`
-
 **Build**:	
 
-```
+```bash
 git clone https://github.com/paocela/AFLplusplus-AndroidPatches
 cd AFLplusplus-AndroidPatches
 ./clang-v13/install_clang-v13.sh # (chmod a+x if needed)
+# in case it fails, run `apt --fix-broken install` and retry
 export LD_PRELOAD=$(pwd)/libLLVM-13.so
 make
 ```
