@@ -90,14 +90,8 @@ To build AFL++ yourself - *which we recommend* - continue at
 
 ```
 git clone https://github.com/paocela/AFLplusplus-AndroidPatches
-cd AFLplusplus-AndroidPatches/clang-v13
-# here script to run all, but for now
-	dpkg -i libllvm_13.0.1_aarch64.deb
-	dpkg -i libcompiler-rt_13.0.1_aarch64.deb 
-	dpkg -i lld_13.0.1_aarch64.deb
-	dpkg -i llvm_13.0.1_aarch64.deb 
-	dpkg -i clang_13.0.1_aarch64.deb
-cd ..
+cd AFLplusplus-AndroidPatches
+./clang-v13/install_clang-v13.sh # (chmod a+x if needed)
 export LD_PRELOAD=$(pwd)/libLLVM-13.so
 make
 ```
