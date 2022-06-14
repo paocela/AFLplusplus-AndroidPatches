@@ -1060,6 +1060,9 @@ static void edit_params(u32 argc, char **argv, char **envp) {
       "void _I(void) __asm__(\"__afl_manual_init\"); "
 #endif                                                        /* ^__APPLE__ */
       "_I(); } while (0)";
+      
+  cc_params[cc_par_cnt++] = alloc_printf("-Wl,--dynamic-list=%s/dynamic_list.txt", obj_path); //maybe not needed
+  cc_params[cc_par_cnt++] = alloc_printf("-Wl,%s/afl-compiler-rt.o", obj_path);
 
   if (x_set) {
 
