@@ -1,2 +1,1 @@
-2022/06/14 12:41:20 Micro started
-2022/06/14 12:43:03 afl-ld-lto.c afl-ld-lto.c
+2022/06/14 13:32:57 Micro started
