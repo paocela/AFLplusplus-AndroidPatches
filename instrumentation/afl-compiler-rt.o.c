@@ -219,6 +219,13 @@ static void __afl_map_shm_fuzz() {
   if (id_str) {
 
     u8 *map = NULL;
+    
+#ifdef __ANDROID__
+
+    u32 shm_id = atoi(id_str);
+    map = (u8 *)shmat(shm_id, NULL, 0);
+
+#else
 
 #ifdef USEMMAP
     const char *shm_file_path = id_str;
@@ -240,6 +247,8 @@ static void __afl_map_shm_fuzz() {
 #else
     u32 shm_id = atoi(id_str);
     map = (u8 *)shmat(shm_id, NULL, 0);
+
+#endif
 
 #endif
 
@@ -363,6 +372,39 @@ static void __afl_map_shm(void) {
 
     }
 
+#ifdef __ANDROID__
+
+    u32 shm_id = atoi(id_str);
+
+    if (__afl_map_size && __afl_map_size > MAP_SIZE) {
+
+      u8 *map_env = (u8 *)getenv("AFL_MAP_SIZE");
+      if (!map_env || atoi((char *)map_env) < MAP_SIZE) {
+
+        send_forkserver_error(FS_ERROR_MAP_SIZE);
+        _exit(1);
+
+      }
+
+    }
+
+    __afl_area_ptr = (u8 *)shmat(shm_id, (void *)__afl_map_addr, 0);
+
+    /* Whooooops. */
+
+    if (!__afl_area_ptr || __afl_area_ptr == (void *)-1) {
+
+      if (__afl_map_addr)
+        send_forkserver_error(FS_ERROR_MAP_ADDR);
+      else
+        send_forkserver_error(FS_ERROR_SHMAT);
+
+      perror("shmat for map");
+      _exit(1);
+
+    }
+#else
+
 #ifdef USEMMAP
     const char *   shm_file_path = id_str;
     int            shm_fd = -1;
@@ -440,6 +482,8 @@ static void __afl_map_shm(void) {
       _exit(1);
 
     }
+
+#endif
 
 #endif
 
@@ -539,6 +583,13 @@ static void __afl_map_shm(void) {
 
     }
 
+#ifdef __ANDROID__
+    u32 shm_id = atoi(id_str);
+
+    __afl_cmp_map = (struct cmp_map *)shmat(shm_id, NULL, 0);
+
+#else
+
 #ifdef USEMMAP
     const char *    shm_file_path = id_str;
     int             shm_fd = -1;
@@ -573,6 +624,8 @@ static void __afl_map_shm(void) {
     u32 shm_id = atoi(id_str);
 
     __afl_cmp_map = (struct cmp_map *)shmat(shm_id, NULL, 0);
+#endif
+
 #endif
 
     __afl_cmp_map_backup = __afl_cmp_map;
